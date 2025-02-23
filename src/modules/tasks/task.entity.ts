@@ -28,21 +28,21 @@ export class Task {
   @Column()
   dueDate: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column()
   createdAt: Date;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @Column()
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.tasks)
   user: User;
 
   @BeforeInsert()
-  generateId() {
+  generateIdAndDates() {
     this.id = uuid();
+    const date = new Date();
+    this.createdAt = date;
+    this.updatedAt = date;
   }
 
   @BeforeUpdate()
