@@ -7,8 +7,9 @@ import { Task } from './modules/tasks/task.entity';
 import { UsersModule } from './modules/users/users.module';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { ResponseInterceptor } from './interceptors/response.interceptor';
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
     },
   ],
 })
