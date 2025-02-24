@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { UpdateTaskDto } from './dtos/update-task.dto';
 import { CreateTaskDto } from './dtos/create-task.dto';
+import { UserDto } from '../users/dtos/user.dto';
 
 @Injectable()
 export class TasksService {
@@ -13,14 +14,13 @@ export class TasksService {
     private userService: UsersService,
   ) {}
 
-  async findAll(userId: string): Promise<Task[] | null> {
-    const user = await this.userService.findOne(userId);
+  async findAll(user: UserDto): Promise<Task[] | null> {
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     return this.repo.find({
-      where: { user: user },
+      where: { user: user, status: 'PENDING' },
       take: 5,
       order: { createdAt: 'DESC' },
     });
@@ -35,11 +35,7 @@ export class TasksService {
     return this.repo.findOne({ where: { user, id: taskId } });
   }
 
-  async createTask(userId: string, attrs: CreateTaskDto): Promise<Task | null> {
-    const user = await this.userService.findOne(userId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  async createTask(user: UserDto, attrs: CreateTaskDto): Promise<Task | null> {
     const newTask = this.repo.create({ ...attrs, user });
     return this.repo.save(newTask);
   }
@@ -51,5 +47,13 @@ export class TasksService {
     }
     Object.assign(task, attrs);
     return this.repo.save(task);
+  }
+
+  async deleteTask(taskId: string): Promise<Task | null> {
+    const task = await this.repo.findOne({ where: { id: taskId } });
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+    return this.repo.remove(task);
   }
 }

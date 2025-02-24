@@ -22,7 +22,7 @@ export class Task {
   @Column()
   description: string;
 
-  @Column({ enum: ['PENDING', 'DONE', 'IN_PROGRESS'], default: 'PENDING' })
+  @Column({ enum: ['PENDING', 'DONE'], default: 'PENDING' })
   status: string;
 
   @Column()

@@ -12,4 +12,8 @@ export class UpdateTaskDto {
   @IsDateString()
   @IsOptional()
   dueDate: Date;
+
+  @IsString()
+  @IsOptional()
+  status: 'PENDING' | 'DONE';
 }
