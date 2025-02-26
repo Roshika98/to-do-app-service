@@ -14,7 +14,7 @@ export class TasksService {
     private userService: UsersService,
   ) {}
 
-  async findAll(user: UserDto): Promise<Task[] | null> {
+  async findAll(user: UserDto | null): Promise<Task[] | null> {
     if (!user) {
       throw new NotFoundException('User not found');
     }
