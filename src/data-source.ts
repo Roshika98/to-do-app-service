@@ -6,7 +6,7 @@ const dbConfig: any = {
   port: 3306,
   username: 'root',
   password: 'root',
-  database: 'test',
+  database: 'todoapp',
   synchronize: false,
   migrations: [__dirname + '/migrations/*.ts'],
   entities: ['**/*.entity.ts'],
