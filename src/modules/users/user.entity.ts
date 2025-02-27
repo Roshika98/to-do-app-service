@@ -2,7 +2,6 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  Index,
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
@@ -18,7 +17,6 @@ export class User {
   name: string;
 
   @Column({ unique: true })
-  @Index()
   email: string;
 
   @Column({ nullable: true })
